@@ -17,7 +17,7 @@ public class KafkaListeners {
      *
      * @param message The message received from the Kafka topic.
      */
-    @KafkaListener(topics = {"messaging-topic"}, groupId = "1st-group")
+    @KafkaListener(topics = {"messaging-topic"}, groupId = "1st-group",containerFactory = "factory") //containerFactory = "factory": Specifies the custom KafkaListenerContainerFactory to use for this listener
     void listener(Message message){
         log.info(String.format("Received: %s" , message));
     }
