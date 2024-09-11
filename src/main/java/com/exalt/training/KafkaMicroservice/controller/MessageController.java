@@ -3,6 +3,7 @@ package com.exalt.training.KafkaMicroservice.controller;
 import com.exalt.training.KafkaMicroservice.model.Message;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.KafkaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -22,7 +23,7 @@ import java.util.Map;
 @RequestMapping("/exalt/training/kafka")
 @RestController
 public class MessageController {
-    private KafkaTemplate<String, Message> kafkaTemplate; // Kafka template for sending messages
+    private final KafkaTemplate<String, Message> kafkaTemplate; // Kafka template for sending messages
 
     /**
      * Constructor for MessageController.
@@ -52,7 +53,7 @@ public class MessageController {
             response.put("status", "Success");
             response.put("message", "Message sent successfully");
             return ResponseEntity.ok(response);
-        } catch (Exception ex) {
+        } catch (KafkaException ex) {
             log.error("Failed to send message: {}", ex.getMessage());
             response.put("status", "Failure");
             response.put("message", "Failed to send message: " + ex.getMessage());
